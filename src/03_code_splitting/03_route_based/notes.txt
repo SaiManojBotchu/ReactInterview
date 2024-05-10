@@ -1,0 +1,27 @@
+// simplified example of React.lazy implementation
+function lazy(dynamicImport) {
+  let promise = null;
+  let component = null;
+
+  return () => {
+    if (!promise) {
+      promise = dynamicImport().then(module => {
+        component = module.default;
+      });
+    }
+
+    if (!component) {
+      throw promise;
+    }
+
+    return component;
+  };
+}
+
+module
+{
+  default: /* The default export */,
+  namedExport1: /* Named export 1 */,
+  namedExport2: /* Named export 2 */,
+}
+
